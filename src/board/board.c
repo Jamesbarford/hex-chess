@@ -2,7 +2,7 @@
 
 Board *create_board()
 {
-	Board *board = malloc(sizeof(uint32_t) * DIMENSIONS);
+	Board *board = (Board *)malloc(sizeof(uint32_t) * DIMENSIONS);
 	if (board == NULL)
 	{
 		errno = ENOMEM;

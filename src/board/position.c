@@ -8,7 +8,7 @@ Position *create_position(int8_t row, int8_t column)
 		return NULL;
 	}
 
-	Position *position = malloc(sizeof(Position));
+	Position *position = (Position *)malloc(sizeof(Position));
 
 	if (position == NULL)
 	{
