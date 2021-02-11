@@ -14,7 +14,7 @@ Position *create_position(int8_t row, int8_t column)
 	{
 		errno = ENOMEM;
 		fprintf(stderr, "Failed to allocate memory for 'Movement\n'");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	position->row = row;
