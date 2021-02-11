@@ -83,6 +83,7 @@ CellType get_cell_type(Piece piece)
 		return Colourless;
 
 	case 0x7:
+	case 0x8:
 	case 0x9:
 	case 0xA:
 	case 0xB:
