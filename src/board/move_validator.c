@@ -55,6 +55,11 @@ Bool is_start_postion(Piece piece, Position *position)
 	}
 }
 
+/**
+ *
+ * PAWN
+ *
+ */
 Bool is_valid_pawn_move(Board *board, Piece piece, Position *from, Position *to)
 {
 	Bool valid_row;
@@ -81,7 +86,8 @@ Bool is_valid_pawn_move(Board *board, Piece piece, Position *from, Position *to)
 }
 
 /**
- * 
+ *
+ * KNIGHT 
  *
  * 0x0F0F0
  * 0xF000F
@@ -103,15 +109,10 @@ Bool is_valid_knight_move(Position *from, Position *to)
 }
 
 /**
+ *
+ * BISHOP
+ *
  * y - y1 = m(x - x1)
- *
- * OR
- *
- * y - y1
- * ------ = m
- * x - x1
- * 
- * For a bishop we must have:
  *
  * y - y1
  * ------ = 1
@@ -135,7 +136,7 @@ Bool is_valid_bishop_move(Board *board, Position *from, Position *to)
 	for (uint8_t i = 0; i < abs(from->row - to->row) - 1; ++i)
 	{
 		next_column = from->column > to->column ? from->column - i : from->column + i;
-		next_row = from->row > to->row ? from->row - i : from->column + i;
+		next_row = from->row > to->row ? from->row - i : from->row + i;
 
 		next_piece = get_piece(board, next_row, next_column);
 		next_type = get_cell_type(next_piece);
@@ -145,6 +146,45 @@ Bool is_valid_bishop_move(Board *board, Position *from, Position *to)
 	}
 
 	return True;
+}
+
+/*
+ * ROOK
+ * */
+Bool is_valid_rook_move(Board *board, Position *from, Position *to)
+{
+	uint8_t next_row, next_column;
+	Piece next_piece;
+	CellType next_type;
+
+	// vertical
+	if (from->column == to->column)
+	{
+		for (int8_t i = 0; i < abs(from->row - to->row); ++i)
+		{
+			next_row = from->row > to->row ? from->row - i : from->row + i;
+			next_piece = get_piece(board, next_row, to->column);
+			next_type = get_cell_type(next_piece);
+
+			if (next_type != Vacant)
+				return False;
+		}
+	}
+	// horizontal
+	else if (from->row == to->row)
+	{
+		for (int8_t i = 0; i < abs(from->column - to->column); ++i)
+		{
+			next_column = from->column > to->column ? from->column - i : from->column + i;
+			next_piece = get_piece(board, to->row, next_column);
+			next_type = get_cell_type(next_piece);
+
+			if (next_type != Vacant)
+				return False;
+		}
+	}
+
+	return False;
 }
 
 Bool is_moveable(Board *board, Position *from, Position *to)
@@ -187,6 +227,9 @@ Bool is_valid_move(Board *board, Piece piece, Position *from, Position *to)
 	case 0x9:
 		return is_valid_bishop_move(board, from, to);
 
+	case 0x4:
+	case 0xA:
+		return is_valid_rook_move(board, from, to);
 	default:
 		return False;
 	}
