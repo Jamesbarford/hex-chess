@@ -187,6 +187,18 @@ Bool is_valid_rook_move(Board *board, Position *from, Position *to)
 	return False;
 }
 
+/**
+ *
+ * QUEEN
+ *
+ * essentially can move like a bishop or castle
+ * */
+Bool is_valid_queen_move(Board *board, Position *from, Position *to)
+{
+	return is_valid_rook_move(board, from, to) || is_valid_bishop_move(board, from, to);
+}
+
+
 Bool is_moveable(Board *board, Position *from, Position *to)
 {
 	Piece current_space = get_piece(board, from->row, from->column);
@@ -230,6 +242,15 @@ Bool is_valid_move(Board *board, Piece piece, Position *from, Position *to)
 	case 0x4:
 	case 0xA:
 		return is_valid_rook_move(board, from, to);
+
+	case 0x5:
+	case 0xB:
+		return is_valid_queen_move(board, from, to);
+
+	case 0x6:
+	case 0xC:
+		return False;
+
 	default:
 		return False;
 	}
