@@ -198,6 +198,25 @@ Bool is_valid_queen_move(Board *board, Position *from, Position *to)
 	return is_valid_rook_move(board, from, to) || is_valid_bishop_move(board, from, to);
 }
 
+/**
+ *
+ * KING
+ *
+ * TODO: separate `in check` function
+ * */
+Bool is_valid_king_move(Board *board, Piece piece,  Position *from, Position *to)
+{
+	Piece next_piece = get_piece(board, to->row, to->column);
+	CellType type = get_cell_type(next_piece);
+	CellType current_type = get_cell_type(piece);
+
+	if (abs(from->column - to->column) != 1)
+		return False;
+	else if(abs(from->row - to->row) != 1)
+		return False;
+
+	return type == Vacant || type != current_type;
+}
 
 Bool is_moveable(Board *board, Position *from, Position *to)
 {
@@ -249,10 +268,9 @@ Bool is_valid_move(Board *board, Piece piece, Position *from, Position *to)
 
 	case 0x6:
 	case 0xC:
-		return False;
+		return is_valid_king_move(board, piece, from, to);
 
 	default:
 		return False;
 	}
 }
-
